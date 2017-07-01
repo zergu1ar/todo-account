@@ -8,8 +8,6 @@
 
 namespace Todo\Validator;
 
-use Todo\Validator\IValidator;
-
 class Checker implements IValidator
 {
     /**

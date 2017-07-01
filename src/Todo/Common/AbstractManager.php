@@ -8,18 +8,13 @@
 
 namespace Todo\Common;
 
-use MongoDB\Driver\Exception\ExecutionTimeoutException;
 use Psr\Container\ContainerInterface;
-use Todo\Exception\PersisterNotSetted;
-use Todo\Common\AbstractEntity;
+use Todo\Common\Exception\PersisterNotSetted;
 
 class AbstractManager
 {
 
-    /**
-     * TODO implement persister interface
-     * @var \Medoo\Medoo
-     */
+    /** @var \Medoo\Medoo */
     protected $persister;
     /** @var string */
     protected $tableName;
@@ -28,6 +23,7 @@ class AbstractManager
 
     /**
      * @param ContainerInterface $container
+     *
      * @throws PersisterNotSetted
      */
     public function __construct(ContainerInterface $container)
@@ -41,6 +37,7 @@ class AbstractManager
 
     /**
      * @param int $id
+     *
      * @return AbstractEntity
      */
     public function getById($id)
@@ -52,6 +49,7 @@ class AbstractManager
 
     /**
      * @param array $data
+     *
      * @return AbstractEntity
      */
     protected function extractEntity($data)
@@ -68,6 +66,7 @@ class AbstractManager
 
     /**
      * @param AbstractEntity $entity
+     *
      * @return AbstractEntity
      */
     public function save(AbstractEntity $entity)
@@ -98,6 +97,7 @@ class AbstractManager
 
     /**
      * @param array $cond
+     *
      * @return int
      */
     public function getCounts($cond = [])
@@ -107,6 +107,7 @@ class AbstractManager
 
     /**
      * @param array $cond
+     *
      * @return AbstractEntity[]
      */
     public function getAll($cond = [])
@@ -121,6 +122,7 @@ class AbstractManager
 
     /**
      * @param array $cond
+     *
      * @return AbstractEntity
      */
     public function getOne($cond = [])

@@ -6,7 +6,7 @@
  * Time: 12:34
  */
 
-namespace Todo\Exception;
+namespace Todo\Common\Exception;
 
 use Throwable;
 

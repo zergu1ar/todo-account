@@ -8,7 +8,7 @@
 
 namespace Todo\Common;
 
-use Todo\Exception\UnknownMethod;
+use Todo\Common\Exception\UnknownMethod;
 
 class AbstractEntity
 {
@@ -29,6 +29,7 @@ class AbstractEntity
 
     /**
      * @param int $id
+     *
      * @return $this
      */
     public function setId($id)
@@ -47,6 +48,7 @@ class AbstractEntity
 
     /**
      * @param string $created
+     *
      * @return $this
      */
     public function setCreated($created)
@@ -64,6 +66,7 @@ class AbstractEntity
 
     /**
      * @param string $updated
+     *
      * @return $this
      */
     public function setUpdated($updated)
@@ -75,6 +78,7 @@ class AbstractEntity
      * @param string $method
      * @param mixed $args
      * @return mixed
+     *
      * @throws UnknownMethod
      */
     public function __call($method, $args)

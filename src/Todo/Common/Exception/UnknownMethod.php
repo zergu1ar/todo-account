@@ -6,7 +6,7 @@
  * Time: 13:11
  */
 
-namespace Todo\Exception;
+namespace Todo\Common\Exception;
 
 class UnknownMethod extends \Exception
 {
