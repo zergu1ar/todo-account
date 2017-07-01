@@ -3,8 +3,6 @@
 use \Slim\App;
 use \Slim\Container;
 use \Medoo\Medoo;
-use \Slim\Http\Request as Request;
-use \Slim\Http\Response as Response;
 use \Todo\Validator\Checker;
 use \Todo\Session\Manager as Session;
 use \Predis\Client as Redis;
