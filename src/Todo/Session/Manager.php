@@ -56,6 +56,7 @@ class Manager
     /**
      * @param int $id
      * @param string $token
+     *
      * @return string
      */
     private function getKeyName($id, $token)
@@ -71,6 +72,7 @@ class Manager
     /**
      * @param int $userId
      * @param string $token
+     *
      * @return AbstractEntity
      */
     public function getUser($userId, $token)
@@ -81,5 +83,18 @@ class Manager
         return $user
             ? unserialize($user)
             : NULL;
+    }
+
+    /**
+     * @param int $userId
+     * @param string $token
+     *
+     * @return bool
+     */
+    public function validateSession($userId, $token)
+    {
+        return !is_null(
+            $this->getUser($userId, $token)
+        );
     }
 }

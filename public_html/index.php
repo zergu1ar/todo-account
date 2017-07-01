@@ -29,10 +29,8 @@ $container = new Container([
 $controller = new Todo\Controller($container, new Checker, new Session($container));
 
 $app = new App($container);
-$app->get('/register/', [$controller, 'register']);
-$app->get('/auth/', [$controller, 'auth']);
-$app->get('/test/', function (Request $request, Response $response) {
-   die('test');
-});
-//$app->post('/auth/', [$controller, 'auth']);
+$app->post('/register/', [$controller, 'register']);
+$app->post('/auth/', [$controller, 'auth']);
+$app->get('/checkAuth/', [$controller, 'checkAuth']);
+$app->get('/findUser/', [$controller, 'findUser']);
 $app->run();

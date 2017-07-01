@@ -9,8 +9,8 @@
 namespace Todo;
 
 use Psr\Container\ContainerInterface;
-use \Slim\Http\Request as Request;
-use \Slim\Http\Response as Response;
+use \Slim\Http\Request;
+use \Slim\Http\Response;
 use Todo\User\Manager;
 use Todo\User\Entity as User;
 use Todo\Crypt\Coder;
@@ -125,6 +125,70 @@ class Controller
             200
         );
 
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     *
+     * @return mixed
+     */
+    public function checkAuth(Request $request, Response $response)
+    {
+        return $this->sendResponse(
+            $response,
+            [
+                'result' => $this->session->validateSession(
+                    $request->getParam('userId'),
+                    $request->getParam('token')
+                )
+            ],
+            200
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     *
+     * @return mixed
+     */
+    public function findUser(Request $request, Response $response)
+    {
+        if ($this->session->validateSession($request->getParam('userId'), $request->getParam('token'))) {
+            $username = $request->getParam('username');
+            $userNameValid = $this->validator->validateLogin($username);
+            if (empty($userNameValid)) {
+                $user = $this->manager->getOne(
+                    ['login' => $username]
+                );
+                if ($user) {
+                    return $this->sendResponse(
+                        $response,
+                        [
+                            'error' => null,
+                            'result' => [
+                                'username' => $user->getLogin()
+                            ]
+                        ],
+                        200
+                    );
+                }
+                $error = ['username' => 'User not found'];
+            } else {
+                $error = ['username' => $userNameValid];
+            }
+        } else {
+            $error = ['auth' => 'Invalid session'];
+        }
+
+        return $this->sendResponse(
+            $response,
+            [
+                'error' => $error
+            ],
+            200
+        );
     }
 
 }
