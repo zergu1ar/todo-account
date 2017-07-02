@@ -8,7 +8,7 @@
 
 namespace Todo\User;
 
-use Todo\Common\AbstractEntity;
+use Zergular\Common\AbstractEntity;
 
 class Entity extends AbstractEntity
 {

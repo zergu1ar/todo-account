@@ -24,7 +24,7 @@ $container = new Container([
     ])
 ]);
 
-$controller = new Todo\Controller($container, new Checker, new Session($container));
+$controller = new Todo\Controller($container, new Checker, new Session($container->get('redis')));
 
 $app = new App($container);
 $app->post('/register/', [$controller, 'register']);

@@ -9,9 +9,7 @@
 namespace Todo\Session;
 
 use Predis\Client;
-use Psr\Container\ContainerInterface;
-use Todo\Session\Exception\RedisClientNotSetted;
-use Todo\Common\AbstractEntity;
+use Zergular\Common\AbstractEntity;
 use Todo\Crypt\Coder;
 
 class Manager
@@ -25,19 +23,13 @@ class Manager
 
     /**
      * Manager constructor.
-     * @param ContainerInterface $container
+     * @param Client $redis
      * @param string $path
      * @param int $ttl
-     *
-     * @throws RedisClientNotSetted
      */
-    public function __construct(ContainerInterface $container, $path = 'loggedUsers', $ttl = 604800)
+    public function __construct(Client $redis, $path = 'loggedUsers', $ttl = 604800)
     {
-        $db = $container->get('redis');
-        if (!$db) {
-            throw new RedisClientNotSetted;
-        }
-        $this->persister = $db;
+        $this->persister = $redis;
         $this->path = $path;
         $this->ttl = $ttl;
     }

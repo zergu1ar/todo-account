@@ -8,8 +8,8 @@
 
 namespace Todo\User;
 
-use Todo\Common\AbstractEntity;
-use Todo\Common\AbstractManager;
+use Zergular\Common\AbstractEntity;
+use Zergular\Common\AbstractManager;
 
 class Manager extends AbstractManager
 {

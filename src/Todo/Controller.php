@@ -31,7 +31,7 @@ class Controller
      */
     public function __construct(ContainerInterface $container, IValidator $validator, Session $session)
     {
-        $this->manager = new Manager($container);
+        $this->manager = new Manager($container->get('db'));
         $this->validator = $validator;
         $this->session = $session;
     }
