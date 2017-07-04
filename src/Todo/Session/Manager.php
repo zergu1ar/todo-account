@@ -97,4 +97,15 @@ class Manager
             $this->getUser($userId, $token)
         );
     }
+
+    /**
+     * @param int $userId
+     * @param string $token
+     *
+     * @return int
+     */
+    public function dropSession($userId, $token)
+    {
+        return $this->persister->del([$this->getKeyName($userId, $token)]);
+    }
 }

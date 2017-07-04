@@ -64,7 +64,7 @@ class Controller
             }
             $error = ['common' => 'Error, while save user'];
         } else if (empty($error)) {
-            $error = ['login' => 'User already registered'];
+            $error = ['login' => ['User already registered']];
         }
         return $this->sendResponse($response, ['error' => $error], 200);
     }
@@ -113,7 +113,7 @@ class Controller
                         'common' => 'Incorrect Login or Password'
                     ]
                 ],
-                403
+                200
             );
         }
 
@@ -154,6 +154,27 @@ class Controller
      *
      * @return mixed
      */
+    public function logout(Request $request, Response $response)
+    {
+
+        return $this->sendResponse(
+            $response,
+            [
+                'response' => $this->session->dropSession(
+                    $request->getParam('userId'),
+                    $request->getParam('token')
+                )
+            ],
+            200
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     *
+     * @return mixed
+     */
     public function findUser(Request $request, Response $response)
     {
         if ($this->session->validateSession($request->getParam('userId'), $request->getParam('token'))) {
@@ -165,16 +186,7 @@ class Controller
                     ['login' => $username]
                 );
                 if ($user) {
-                    return $this->sendResponse(
-                        $response,
-                        [
-                            'error' => null,
-                            'response' => [
-                                'user' => $user->toArray(['password'])
-                            ]
-                        ],
-                        200
-                    );
+                    return $this->responseUser($user, $response);
                 }
                 $error = ['username' => 'User not found'];
             } else {
@@ -188,6 +200,60 @@ class Controller
             $response,
             [
                 'error' => $error
+            ],
+            200
+        );
+    }
+
+    /**
+     * @param Entity $user
+     * @param Response $response
+     *
+     * @return mixed
+     */
+    private function responseUser($user, Response $response)
+    {
+        return $this->sendResponse(
+            $response,
+            [
+                'error' => null,
+                'response' => [
+                    'user' => $user->toArray(['password'])
+                ]
+            ],
+            200
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     *
+     * @return mixed
+     */
+    public function getUserNameById(Request $request, Response $response)
+    {
+        /** @var Entity $user */
+        $user = $this->manager->getById(
+            $request->getParam('id')
+        );
+        if ($user) {
+            return $this->sendResponse(
+                $response,
+                [
+                    'error' => null,
+                    'response' => [
+                        'username' => $user->getLogin()
+                    ]
+                ],
+                200
+            );
+        }
+
+        return $this->sendResponse(
+            $response,
+            [
+                'error' => ['id' => 'User not found']
             ],
             200
         );

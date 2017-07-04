@@ -6,7 +6,9 @@ use \Medoo\Medoo;
 use \Todo\Validator\Checker;
 use \Todo\Session\Manager as Session;
 use \Predis\Client as Redis;
-require_once '../vendor/autoload.php';
+require_once __DIR__ . '../vendor/autoload.php';
+
+header('Access-Control-Allow-Origin: *');
 
 $container = new Container([
     'db' => new Medoo([
@@ -31,4 +33,6 @@ $app->post('/register/', [$controller, 'register']);
 $app->post('/auth/', [$controller, 'auth']);
 $app->get('/checkAuth/', [$controller, 'checkAuth']);
 $app->get('/findUser/', [$controller, 'findUser']);
+$app->get('/getUserNameById/', [$controller, 'getUserNameById']);
+$app->post('/logout/', [$controller, 'logout']);
 $app->run();

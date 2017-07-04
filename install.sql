@@ -6,7 +6,6 @@ CREATE TABLE todo.users (
           `updated`     DATETIME NOT NULL
 );
 
-
 CREATE TABLE todo.todoTask (
           `id`          INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
           `name`        VARCHAR(200) NOT NULL,
