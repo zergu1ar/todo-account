@@ -11,6 +11,7 @@ namespace Todo;
 use Psr\Container\ContainerInterface;
 use \Slim\Http\Request;
 use \Slim\Http\Response;
+use Todo\User\Entity;
 use Todo\User\Manager;
 use Todo\User\Entity as User;
 use Todo\Crypt\Coder;
@@ -138,7 +139,7 @@ class Controller
         return $this->sendResponse(
             $response,
             [
-                'result' => $this->session->validateSession(
+                'response' => $this->session->validateSession(
                     $request->getParam('userId'),
                     $request->getParam('token')
                 )
@@ -159,6 +160,7 @@ class Controller
             $username = $request->getParam('username');
             $userNameValid = $this->validator->validateLogin($username);
             if (empty($userNameValid)) {
+                /** @var Entity $user */
                 $user = $this->manager->getOne(
                     ['login' => $username]
                 );
@@ -167,8 +169,8 @@ class Controller
                         $response,
                         [
                             'error' => null,
-                            'result' => [
-                                'username' => $user->getLogin()
+                            'response' => [
+                                'user' => $user->toArray(['password'])
                             ]
                         ],
                         200
