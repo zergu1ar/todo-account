@@ -1,23 +1,24 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alexey
- * Date: 01.07.17
- * Time: 13:59
- */
 
 namespace Todo;
 
-use Psr\Container\ContainerInterface;
-use \Slim\Http\Request;
-use \Slim\Http\Response;
-use Todo\User\Entity;
-use Todo\User\Manager;
-use Todo\User\Entity as User;
 use Todo\Crypt\Coder;
-use Todo\Session\Manager as Session;
+use Todo\User\Manager;
+use Slim\Http\Request;
+use Slim\Http\Response;
+use Todo\User\UserInterface;
+use Todo\User\Entity as User;
+use Todo\Session\SessionInterface;
+use Todo\User\UserManagerInterface;
 use Todo\Validator\CheckerInterface;
+use Todo\Session\Manager as Session;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Class Controller
+ * @package Todo
+ */
 class Controller
 {
     /** @var Manager */
@@ -29,35 +30,40 @@ class Controller
 
     /**
      * Controller constructor.
-     * @param ContainerInterface $container
      * @param CheckerInterface $validator
-     * @param Session $session
+     * @param SessionInterface $session
+     * @param UserManagerInterface $manager
      */
-    public function __construct(ContainerInterface $container, CheckerInterface $validator, Session $session)
+    public function __construct(
+        CheckerInterface $validator,
+        SessionInterface $session,
+        UserManagerInterface $manager
+    )
     {
-        $this->manager = new Manager($container->get('db'));
+        $this->manager = $manager;
         $this->validator = $validator;
         $this->session = $session;
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
      *
      * @return mixed
      */
-    public function register(Request $request, Response $response)
+    public function register(RequestInterface $request, ResponseInterface $response)
     {
+        /** @var Request $request */
         $login = trim($request->getParam('login'));
         $password = trim($request->getParam('password'));
-        $error = [];
 
-        $loginValid = $this->validator->validateString($login);
-        $passwordValid = $this->validator->validateString($password);
-        if (!empty($loginValid) || !empty($passwordValid)) {
+        $error = [];
+        $loginValidError = $this->validator->validateString($login);
+        $passwordValidError = $this->validator->validateString($password);
+        if (!empty($loginValidError) || !empty($passwordValidError)) {
             $error = array_merge(
-                ['login' => $loginValid],
-                ['password' => $passwordValid]
+                ['login' => $loginValidError],
+                ['password' => $passwordValidError]
             );
         }
         if (empty($error) && !$this->manager->isExists($login)) {
@@ -66,7 +72,7 @@ class Controller
                 return $this->auth($request, $response);
             }
             $error = ['common' => 'Error, while save user'];
-        } else if (empty($error)) {
+        } elseif (empty($error)) {
             $error = ['login' => ['User already registered']];
         }
         return $this->sendResponse($response, ['error' => $error], 200);
@@ -83,14 +89,15 @@ class Controller
     }
 
     /**
-     * @param Response $response
+     * @param ResponseInterface $response
      * @param array $data
      * @param int $code
      *
      * @return mixed
      */
-    private function sendResponse(Response $response, $data, $code)
+    private function sendResponse(ResponseInterface $response, $data, $code)
     {
+        /** @var Response $response */
         return $response->withJson(
             $data,
             $code
@@ -98,13 +105,14 @@ class Controller
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
      *
      * @return mixed
      */
-    public function auth(Request $request, Response $response)
+    public function auth(RequestInterface $request, ResponseInterface $response)
     {
+        /** @var Request $request */
         $login = trim($request->getParam('login'));
         $pwd = trim($request->getParam('password'));
         $user = $this->manager->getUserByLoginAndPwd($login, $this->encryptPwd($pwd));
@@ -123,7 +131,7 @@ class Controller
         return $this->sendResponse(
             $response,
             [
-                'error' => null,
+                'error' => NULL,
                 'response' => $this->session->createSession($user)
             ],
             200
@@ -132,13 +140,14 @@ class Controller
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
      *
      * @return mixed
      */
-    public function checkAuth(Request $request, Response $response)
+    public function checkAuth(RequestInterface $request, ResponseInterface $response)
     {
+        /** @var Request $request */
         return $this->sendResponse(
             $response,
             [
@@ -152,14 +161,14 @@ class Controller
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
      *
      * @return mixed
      */
-    public function logout(Request $request, Response $response)
+    public function logout(RequestInterface $request, ResponseInterface $response)
     {
-
+        /** @var Request $request */
         return $this->sendResponse(
             $response,
             [
@@ -173,53 +182,46 @@ class Controller
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
      *
      * @return mixed
      */
-    public function findUser(Request $request, Response $response)
+    public function findUser(RequestInterface $request, ResponseInterface $response)
     {
+        /** @var Request $request */
         if ($this->session->validateSession($request->getParam('userId'), $request->getParam('token'))) {
             $username = $request->getParam('username');
-            $userNameValid = $this->validator->validateString($username);
-            if (empty($userNameValid)) {
-                /** @var Entity $user */
+            $userNameValidError = $this->validator->validateString($username);
+            if (empty($userNameValidError)) {
+                /** @var UserInterface $user */
                 $user = $this->manager->getOne(
                     ['login' => $username]
                 );
                 if ($user) {
                     return $this->responseUser($user, $response);
                 }
-                $error = ['username' => 'User not found'];
-            } else {
-                $error = ['username' => $userNameValid];
             }
+            $error = ['username' => $userNameValidError ?? 'User not found'];
         } else {
             $error = ['auth' => 'Invalid session'];
         }
 
-        return $this->sendResponse(
-            $response,
-            [
-                'error' => $error
-            ],
-            200
-        );
+        return $this->sendResponse($response, ['error' => $error], 200);
     }
 
     /**
-     * @param Entity $user
-     * @param Response $response
+     * @param UserInterface $user
+     * @param ResponseInterface $response
      *
      * @return mixed
      */
-    private function responseUser($user, Response $response)
+    private function responseUser(UserInterface $user, ResponseInterface $response)
     {
         return $this->sendResponse(
             $response,
             [
-                'error' => null,
+                'error' => NULL,
                 'response' => [
                     'user' => $user->toArray(['password'])
                 ]
@@ -229,22 +231,23 @@ class Controller
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
      *
      * @return mixed
      */
-    public function getUserNameById(Request $request, Response $response)
+    public function getUserNameById(RequestInterface $request, ResponseInterface $response)
     {
-        /** @var Entity $user */
-        $user = $this->manager->getById(
-            $request->getParam('id')
-        );
+        /**
+         * @var Request $request
+         * @var UserInterface $user
+         */
+        $user = $this->manager->getById($request->getParam('id'));
         if ($user) {
             return $this->sendResponse(
                 $response,
                 [
-                    'error' => null,
+                    'error' => NULL,
                     'response' => [
                         'username' => $user->getLogin()
                     ]
@@ -252,14 +255,6 @@ class Controller
                 200
             );
         }
-
-        return $this->sendResponse(
-            $response,
-            [
-                'error' => ['id' => 'User not found']
-            ],
-            200
-        );
+        return $this->sendResponse($response, ['error' => ['id' => 'User not found']], 200);
     }
-
 }

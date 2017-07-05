@@ -1,18 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: devel
- * Date: 05.07.17
- * Time: 12:16
- */
 
-namespace Tests\Todo\User;
+namespace Todo\Tests\User;
 
 use Todo\User\Entity;
 
+/**
+ * Class EntityTest
+ * @package Todo\Tests\User
+ */
 class EntityTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @param string $login
      * @param string $password
@@ -23,8 +20,8 @@ class EntityTest extends \PHPUnit_Framework_TestCase
     public function testToArray($login, $password, $expectedArray)
     {
         $entity = new Entity($login, $password);
-
-        var_dump($entity->toArray([]));
+        $this->assertEquals($login, $entity->getLogin());
+        $this->assertEquals($password, $entity->getPassword());
         $this->assertEquals($entity->toArray([]), $expectedArray);
     }
 

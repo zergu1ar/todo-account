@@ -1,16 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alexey
- * Date: 01.07.17
- * Time: 12:13
- */
 
 namespace Todo\User;
 
 use Zergular\Common\AbstractEntity;
 
-class Entity extends AbstractEntity
+class Entity extends AbstractEntity implements UserInterface
 {
 
     /** @var string */
@@ -30,7 +24,7 @@ class Entity extends AbstractEntity
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getLogin()
     {
@@ -38,8 +32,7 @@ class Entity extends AbstractEntity
     }
 
     /**
-     * @param string $login
-     * @return $this
+     * @inheritdoc
      */
     public function setLogin($login)
     {
@@ -48,7 +41,7 @@ class Entity extends AbstractEntity
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getPassword()
     {
@@ -56,14 +49,11 @@ class Entity extends AbstractEntity
     }
 
     /**
-     * @param string $password
-     * @return $this
+     * @inheritdoc
      */
     public function setPassword($password)
     {
         $this->password = $password;
         return $this;
     }
-
-
 }

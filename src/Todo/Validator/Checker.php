@@ -1,23 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alexey
- * Date: 01.07.17
- * Time: 15:29
- */
 
 namespace Todo\Validator;
 
+/**
+ * Class Checker
+ * @package Todo\Validator
+ */
 class Checker implements CheckerInterface
 {
     /**
-     * @param string $login
-     * @param int $minLength
-     * @param int $maxLength
-     *
-     * @return string[]
+     * @inheritdoc
      */
-    public function validateString($login, $minLength = 3, $maxLength = 99)
+    public function validateString($login, $minLength = self::DEFAULT_MIN_LENGTH, $maxLength = self::DEFAULT_MAX_LENGTH)
     {
         return array_values(
             array_filter(
@@ -30,9 +24,7 @@ class Checker implements CheckerInterface
     }
 
     /**
-     * @param string $string
-     *
-     * @return string[]
+     * @inheritdoc
      */
     public function validateForEmpty($string)
     {
@@ -44,21 +36,19 @@ class Checker implements CheckerInterface
     }
 
     /**
-     * @param string $string
-     * @param int $minLength
-     * @param int $maxLength
-     *
-     * @return string[]
+     * @inheritdoc
      */
-    public function validateLength($string, $minLength = 3, $maxLength = 6)
-    {
+    public function validateLength(
+        $string,
+        $minLength = self::DEFAULT_MIN_LENGTH,
+        $maxLength = self::DEFAULT_MAX_LENGTH
+    ) {
         $string = trim($string);
         $len = mb_strlen($string);
         return [
-            ($len > $maxLength || $len < $minLength)
+            ($len >= $maxLength || $len <= $minLength)
                 ? sprintf('Field must be from %d to %d symbols', $minLength, $maxLength)
                 : ''
         ];
     }
 }
-

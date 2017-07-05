@@ -1,18 +1,46 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alexey
- * Date: 01.07.17
- * Time: 15:27
- */
 
 namespace Todo\Validator;
 
-interface CheckerInterface {
+/**
+ * Interface CheckerInterface
+ * @package Todo\Validator
+ */
+interface CheckerInterface
+{
+    const DEFAULT_MIN_LENGTH = 3;
+    const DEFAULT_MAX_LENGTH = 99;
 
-    public function validateString($login);
+    /**
+     * @param string $login
+     * @param int $minLength
+     * @param int $maxLength
+     *
+     * @return string[]
+     */
+    public function validateString(
+        $login,
+        $minLength = self::DEFAULT_MIN_LENGTH,
+        $maxLength = self::DEFAULT_MAX_LENGTH
+    );
 
+    /**
+     * @param string $string
+     *
+     * @return string[]
+     */
     public function validateForEmpty($string);
 
-    public function validateLength($string, $minLength, $maxLength);
+    /**
+     * @param string $string
+     * @param int $minLength
+     * @param int $maxLength
+     *
+     * @return string[]
+     */
+    public function validateLength(
+        $string,
+        $minLength = self::DEFAULT_MIN_LENGTH,
+        $maxLength = self::DEFAULT_MAX_LENGTH
+    );
 }

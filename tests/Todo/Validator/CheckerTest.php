@@ -1,15 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: devel
- * Date: 05.07.17
- * Time: 11:56
- */
 
-namespace Tests\Todo\Validator;
+namespace Todo\Tests\Validator;
 
 use Todo\Validator\Checker;
 
+/**
+ * Class CheckerTest
+ * @package Todo\Tests\Validator
+ */
 class CheckerTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Checker */
@@ -69,7 +67,7 @@ class CheckerTest extends \PHPUnit_Framework_TestCase
     {
         return [
             ['test', 3, 6, []],
-            ['test', 1, 4, []],
+            ['test', 1, 5, []],
             ['test case so long', 3, 60, []]
         ];
     }

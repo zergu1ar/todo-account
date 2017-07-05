@@ -1,11 +1,14 @@
 <?php
 
-use \Slim\App;
-use \Slim\Container;
-use \Medoo\Medoo;
-use \Todo\Validator\Checker;
-use \Todo\Session\Manager as Session;
-use \Predis\Client as Redis;
+use Slim\App;
+use Medoo\Medoo;
+use Slim\Container;
+use Todo\Controller;
+use Todo\User\Manager;
+use Todo\Validator\Checker;
+use Predis\Client as Redis;
+use Todo\Session\Manager as Session;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 header('Access-Control-Allow-Origin: *');
@@ -21,12 +24,16 @@ $container = new Container([
     ]),
     'redis' => new Redis ([
         'scheme' => 'tcp',
-        'host'   => '127.0.0.1',
-        'port'   => 6379,
+        'host' => '127.0.0.1',
+        'port' => 6379,
     ])
 ]);
 
-$controller = new Todo\Controller($container, new Checker, new Session($container->get('redis')));
+$controller = new Controller(
+    new Checker,
+    new Session($container->get('redis')),
+    new Manager($container->get('db'))
+);
 
 $app = new App($container);
 $app->post('/register/', [$controller, 'register']);

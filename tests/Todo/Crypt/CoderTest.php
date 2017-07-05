@@ -1,15 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: devel
- * Date: 05.07.17
- * Time: 11:14
- */
 
-namespace Tests\Todo\Crypt;
+namespace Todo\Tests\Crypt;
 
 use Todo\Crypt\Coder;
 
+/**
+ * Class CoderTest
+ * @package Todo\Tests\Crypt
+ */
 class CoderTest extends \PHPUnit_Framework_TestCase
 {
 

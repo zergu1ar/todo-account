@@ -1,17 +1,16 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alexey
- * Date: 01.07.17
- * Time: 13:19
- */
 
 namespace Todo\Crypt;
 
+/**
+ * Class Coder
+ * @package Todo\Crypt
+ */
 class Coder
 {
     /**
      * @param string $string
+     *
      * @return string
      */
     public static function createToken($string)
@@ -21,6 +20,7 @@ class Coder
 
     /**
      * @param string $string
+     *
      * @return string
      */
     public static function encrypt($string)

@@ -1,20 +1,18 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alexey
- * Date: 01.07.17
- * Time: 16:07
- */
 
 namespace Todo\Session;
 
-use Predis\Client;
-use Zergular\Common\AbstractEntity;
 use Todo\Crypt\Coder;
+use Predis\ClientInterface;
+use Zergular\Common\EntityInterface;
 
-class Manager
+/**
+ * Class Manager
+ * @package Todo\Session
+ */
+class Manager implements SessionInterface
 {
-    /** @var Client */
+    /** @var ClientInterface */
     private $persister;
     /** @var string */
     private $path;
@@ -23,11 +21,11 @@ class Manager
 
     /**
      * Manager constructor.
-     * @param Client $redis
+     * @param ClientInterface $redis
      * @param string $path
      * @param int $ttl
      */
-    public function __construct(Client $redis, $path = 'loggedUsers', $ttl = 604800)
+    public function __construct(ClientInterface $redis, $path = 'loggedUsers', $ttl = 604800)
     {
         $this->persister = $redis;
         $this->path = $path;
@@ -35,11 +33,9 @@ class Manager
     }
 
     /**
-     * @param AbstractEntity $user
-     *
-     * @return array
+     * @inheritdoc
      */
-    public function createSession(AbstractEntity $user)
+    public function createSession(EntityInterface $user)
     {
         $token = Coder::createToken($user->getId());
         $this->persister->setex(
@@ -70,10 +66,7 @@ class Manager
     }
 
     /**
-     * @param int $userId
-     * @param string $token
-     *
-     * @return AbstractEntity
+     * @inheritdoc
      */
     public function getUser($userId, $token)
     {
@@ -86,10 +79,7 @@ class Manager
     }
 
     /**
-     * @param int $userId
-     * @param string $token
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function validateSession($userId, $token)
     {
@@ -99,10 +89,7 @@ class Manager
     }
 
     /**
-     * @param int $userId
-     * @param string $token
-     *
-     * @return int
+     * @inheritdoc
      */
     public function dropSession($userId, $token)
     {

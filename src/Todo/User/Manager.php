@@ -1,24 +1,22 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alexey
- * Date: 01.07.17
- * Time: 12:14
- */
 
 namespace Todo\User;
 
-use Zergular\Common\AbstractEntity;
 use Zergular\Common\AbstractManager;
 
-class Manager extends AbstractManager
+/**
+ * Class Manager
+ * @package Todo\User
+ */
+class Manager extends AbstractManager implements UserManagerInterface
 {
+    /** @var string */
     protected $tableName = 'users';
+    /** @var string */
     protected $entityName = '\\Todo\\User\\Entity';
 
     /**
-     * @param string $login
-     * @return int
+     * @inheritdoc
      */
     public function isExists($login)
     {
@@ -26,9 +24,7 @@ class Manager extends AbstractManager
     }
 
     /**
-     * @param string $login
-     * @param string $pwd
-     * @return AbstractEntity
+     * @inheritdoc
      */
     public function getUserByLoginAndPwd($login, $pwd)
     {
