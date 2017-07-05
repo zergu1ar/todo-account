@@ -1,12 +1,12 @@
 <?php
 
-namespace Todo\Tests\Validator;
+namespace Zergular\Todo\Tests\Validator;
 
-use Todo\Validator\Checker;
+use Zergular\Todo\Validator\Checker;
 
 /**
  * Class CheckerTest
- * @package Todo\Tests\Validator
+ * @package Zergular\Todo\Tests\Validator
  */
 class CheckerTest extends \PHPUnit_Framework_TestCase
 {

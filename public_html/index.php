@@ -3,11 +3,11 @@
 use Slim\App;
 use Medoo\Medoo;
 use Slim\Container;
-use Todo\Controller;
-use Todo\User\Manager;
-use Todo\Validator\Checker;
 use Predis\Client as Redis;
-use Todo\Session\Manager as Session;
+use Zergular\Todo\Controller;
+use Zergular\Todo\User\Manager;
+use Zergular\Todo\Validator\Checker;
+use Zergular\Todo\Session\Manager as Session;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

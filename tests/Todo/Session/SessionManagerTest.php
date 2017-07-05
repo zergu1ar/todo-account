@@ -1,20 +1,20 @@
 <?php
 
-namespace Todo\Tests\Session;
+namespace Zergular\Todo\Tests\Session;
 
 use Predis\Client;
-use Todo\Session\Manager;
-use Todo\Session\SessionInterface;
-use Todo\User\Entity;
-use Todo\User\UserInterface;
+use Zergular\Todo\Session\Manager;
+use Zergular\Todo\Session\SessionManagerInterface;
+use Zergular\Todo\User\Entity;
+use Zergular\Todo\User\UserInterface;
 
 /**
  * Class SessionManagerTest
- * @package Todo\Tests\Session
+ * @package Zergular\Todo\Tests\Session
  */
 class SessionManagerTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var SessionInterface */
+    /** @var SessionManagerInterface */
     private $manager;
 
     public function setUp()

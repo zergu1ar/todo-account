@@ -1,19 +1,19 @@
 <?php
 
-namespace Todo\User;
+namespace Zergular\Todo\User;
 
 use Zergular\Common\AbstractManager;
 
 /**
  * Class Manager
- * @package Todo\User
+ * @package Zergular\Todo\User
  */
 class Manager extends AbstractManager implements UserManagerInterface
 {
     /** @var string */
     protected $tableName = 'users';
     /** @var string */
-    protected $entityName = '\\Todo\\User\\Entity';
+    protected $entityName = '\\Zergular\\Todo\\User\\Entity';
 
     /**
      * @inheritdoc

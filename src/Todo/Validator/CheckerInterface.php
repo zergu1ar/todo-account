@@ -1,10 +1,10 @@
 <?php
 
-namespace Todo\Validator;
+namespace Zergular\Todo\Validator;
 
 /**
  * Interface CheckerInterface
- * @package Todo\Validator
+ * @package Zergular\Todo\Validator
  */
 interface CheckerInterface
 {

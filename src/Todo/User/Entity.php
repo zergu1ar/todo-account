@@ -1,9 +1,13 @@
 <?php
 
-namespace Todo\User;
+namespace Zergular\Todo\User;
 
 use Zergular\Common\AbstractEntity;
 
+/**
+ * Class Entity
+ * @package Zergular\Todo\User
+ */
 class Entity extends AbstractEntity implements UserInterface
 {
 

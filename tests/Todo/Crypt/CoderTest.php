@@ -1,12 +1,12 @@
 <?php
 
-namespace Todo\Tests\Crypt;
+namespace Zergular\Todo\Tests\Crypt;
 
-use Todo\Crypt\Coder;
+use Zergular\Todo\Crypt\Coder;
 
 /**
  * Class CoderTest
- * @package Todo\Tests\Crypt
+ * @package Zergular\Todo\Tests\Crypt
  */
 class CoderTest extends \PHPUnit_Framework_TestCase
 {
@@ -46,7 +46,7 @@ class CoderTest extends \PHPUnit_Framework_TestCase
             ['test string', 40],
             ['Some another string', 40],
             ['small', 40],
-            ['There is the biggest length string of this test, but in results we have only 40 symbols length hash', 40]
+            ['There is the biggest length string of this test, but in results we have only 40 symbols length', 40]
         ];
     }
 }

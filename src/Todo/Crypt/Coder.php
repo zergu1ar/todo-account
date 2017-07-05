@@ -1,10 +1,10 @@
 <?php
 
-namespace Todo\Crypt;
+namespace Zergular\Todo\Crypt;
 
 /**
  * Class Coder
- * @package Todo\Crypt
+ * @package Zergular\Todo\Crypt
  */
 class Coder
 {
@@ -15,7 +15,7 @@ class Coder
      */
     public static function createToken($string)
     {
-        return sha1(md5($string . time() . rand(0,999)));
+        return sha1(md5($string . time() . rand(0, 999)));
     }
 
     /**

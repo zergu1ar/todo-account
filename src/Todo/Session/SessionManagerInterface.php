@@ -1,27 +1,27 @@
 <?php
 
-namespace Todo\Session;
+namespace Zergular\Todo\Session;
 
-use Zergular\Common\EntityInterface;
+use Zergular\Todo\User\UserInterface;
 
 /**
  * Interface SessionInterface
- * @package Todo\Session
+ * @package Zergular\Todo\Session
  */
-interface SessionInterface
+interface SessionManagerInterface
 {
     /**
-     * @param EntityInterface $user
+     * @param UserInterface $user
      *
      * @return array
      */
-    public function createSession(EntityInterface $user);
+    public function createSession(UserInterface $user);
 
     /**
      * @param int $userId
      * @param string $token
      *
-     * @return EntityInterface
+     * @return UserInterface
      */
     public function getUser($userId, $token);
 

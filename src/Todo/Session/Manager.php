@@ -1,16 +1,16 @@
 <?php
 
-namespace Todo\Session;
+namespace Zergular\Todo\Session;
 
-use Todo\Crypt\Coder;
 use Predis\ClientInterface;
-use Zergular\Common\EntityInterface;
+use Zergular\Todo\User\UserInterface;
+use Zergular\Todo\Crypt\Coder;
 
 /**
  * Class Manager
- * @package Todo\Session
+ * @package Zergular\Todo\Session
  */
-class Manager implements SessionInterface
+class Manager implements SessionManagerInterface
 {
     /** @var ClientInterface */
     private $persister;
@@ -35,7 +35,7 @@ class Manager implements SessionInterface
     /**
      * @inheritdoc
      */
-    public function createSession(EntityInterface $user)
+    public function createSession(UserInterface $user)
     {
         $token = Coder::createToken($user->getId());
         $this->persister->setex(

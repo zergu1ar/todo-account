@@ -1,12 +1,12 @@
 <?php
 
-namespace Todo\User;
+namespace Zergular\Todo\User;
 
 use Zergular\Common\EntityInterface;
 
 /**
  * Interface UserInterface
- * @package Todo\User
+ * @package Zergular\Todo\User
  */
 interface UserInterface extends EntityInterface
 {

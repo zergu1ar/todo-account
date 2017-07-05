@@ -1,12 +1,12 @@
 <?php
 
-namespace Todo\User;
+namespace Zergular\Todo\User;
 
 use Zergular\Common\ManagerInterface;
 
 /**
  * Interface UserManagerInterface
- * @package Todo\User
+ * @package Zergular\Todo\User
  */
 interface UserManagerInterface extends ManagerInterface
 {
@@ -21,7 +21,7 @@ interface UserManagerInterface extends ManagerInterface
      * @param string $login
      * @param string $pwd
      *
-     * @return UserManagerInterface
+     * @return UserInterface
      */
     public function getUserByLoginAndPwd($login, $pwd);
 }

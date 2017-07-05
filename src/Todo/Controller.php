@@ -1,45 +1,42 @@
 <?php
 
-namespace Todo;
+namespace Zergular\Todo;
 
-use Todo\Crypt\Coder;
-use Todo\User\Manager;
+use Zergular\Todo\Crypt\Coder;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Todo\User\UserInterface;
-use Todo\User\Entity as User;
-use Todo\Session\SessionInterface;
-use Todo\User\UserManagerInterface;
-use Todo\Validator\CheckerInterface;
-use Todo\Session\Manager as Session;
+use Zergular\Todo\User\UserInterface;
+use Zergular\Todo\User\Entity as User;
+use Zergular\Todo\Session\SessionManagerInterface;
+use Zergular\Todo\User\UserManagerInterface;
+use Zergular\Todo\Validator\CheckerInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class Controller
- * @package Todo
+ * @package Zergular\Todo
  */
 class Controller
 {
-    /** @var Manager */
+    /** @var UserManagerInterface */
     private $manager;
     /** @var CheckerInterface */
     private $validator;
-    /** @var Session */
+    /** @var SessionManagerInterface */
     private $session;
 
     /**
      * Controller constructor.
      * @param CheckerInterface $validator
-     * @param SessionInterface $session
+     * @param SessionManagerInterface $session
      * @param UserManagerInterface $manager
      */
     public function __construct(
         CheckerInterface $validator,
-        SessionInterface $session,
+        SessionManagerInterface $session,
         UserManagerInterface $manager
-    )
-    {
+    ) {
         $this->manager = $manager;
         $this->validator = $validator;
         $this->session = $session;
@@ -75,7 +72,7 @@ class Controller
         } elseif (empty($error)) {
             $error = ['login' => ['User already registered']];
         }
-        return $this->sendResponse($response, ['error' => $error], 200);
+        return $this->sendResponse($response, ['error' => $error]);
     }
 
     /**
@@ -95,7 +92,7 @@ class Controller
      *
      * @return mixed
      */
-    private function sendResponse(ResponseInterface $response, $data, $code)
+    private function sendResponse(ResponseInterface $response, $data, $code = 200)
     {
         /** @var Response $response */
         return $response->withJson(
@@ -123,8 +120,7 @@ class Controller
                     'error' => [
                         'common' => 'Incorrect Login or Password'
                     ]
-                ],
-                200
+                ]
             );
         }
 
@@ -133,8 +129,7 @@ class Controller
             [
                 'error' => NULL,
                 'response' => $this->session->createSession($user)
-            ],
-            200
+            ]
         );
 
     }
@@ -155,8 +150,7 @@ class Controller
                     $request->getParam('userId'),
                     $request->getParam('token')
                 )
-            ],
-            200
+            ]
         );
     }
 
@@ -176,8 +170,7 @@ class Controller
                     $request->getParam('userId'),
                     $request->getParam('token')
                 )
-            ],
-            200
+            ]
         );
     }
 
@@ -202,12 +195,16 @@ class Controller
                     return $this->responseUser($user, $response);
                 }
             }
-            $error = ['username' => $userNameValidError ?? 'User not found'];
+            $error = [
+                'username' => empty($userNameValidError)
+                    ? 'User not found'
+                    : $userNameValidError
+            ];
         } else {
             $error = ['auth' => 'Invalid session'];
         }
 
-        return $this->sendResponse($response, ['error' => $error], 200);
+        return $this->sendResponse($response, ['error' => $error]);
     }
 
     /**
@@ -225,8 +222,7 @@ class Controller
                 'response' => [
                     'user' => $user->toArray(['password'])
                 ]
-            ],
-            200
+            ]
         );
     }
 
@@ -251,10 +247,9 @@ class Controller
                     'response' => [
                         'username' => $user->getLogin()
                     ]
-                ],
-                200
+                ]
             );
         }
-        return $this->sendResponse($response, ['error' => ['id' => 'User not found']], 200);
+        return $this->sendResponse($response, ['error' => ['id' => 'User not found']]);
     }
 }

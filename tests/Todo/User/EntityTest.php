@@ -1,12 +1,12 @@
 <?php
 
-namespace Todo\Tests\User;
+namespace Zergular\Todo\Tests\User;
 
-use Todo\User\Entity;
+use Zergular\Todo\User\Entity;
 
 /**
  * Class EntityTest
- * @package Todo\Tests\User
+ * @package Zergular\Todo\Tests\User
  */
 class EntityTest extends \PHPUnit_Framework_TestCase
 {
