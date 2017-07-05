@@ -6,6 +6,7 @@ CREATE TABLE todo.users (
           `updated`     DATETIME NOT NULL
 );
 
+ALTER TABLE `users` ADD INDEX(`login`);
 ALTER TABLE `users` ADD INDEX(`login`, `password`);
 
 CREATE TABLE todo.todoTask (
