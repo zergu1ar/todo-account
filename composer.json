@@ -5,11 +5,11 @@
   "require": {
     "slim/slim-skeleton": "^3.1",
     "predis/predis": "^1.1",
-    "zergular/common": "dev-master"
+    "zergular/common": "0.1"
   },
   "require-dev": {
-    "phpunit/phpunit": "^5.7",
-    "phpunit/php-code-coverage": "^4.0"
+    "phpunit/phpunit": "^4.8",
+    "phpunit/php-code-coverage": "^2.0"
   },
   "autoload": {
     "psr-4": {
