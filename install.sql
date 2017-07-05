@@ -6,6 +6,8 @@ CREATE TABLE todo.users (
           `updated`     DATETIME NOT NULL
 );
 
+ALTER TABLE `users` ADD INDEX(`login`, `password`);
+
 CREATE TABLE todo.todoTask (
           `id`          INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
           `name`        VARCHAR(200) NOT NULL,
@@ -14,6 +16,7 @@ CREATE TABLE todo.todoTask (
           `created`     DATETIME NOT NULL,
           `updated`     DATETIME NOT NULL
 );
+ALTER TABLE `todoTask` ADD INDEX(`ownerId`);
 
 CREATE TABLE todo.todoLink (
           `id`          INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -23,4 +26,6 @@ CREATE TABLE todo.todoLink (
           `created`     DATETIME NOT NULL,
           `updated`     DATETIME NOT NULL
 );
+ALTER TABLE `todoLink` ADD INDEX(`userId`);
+ALTER TABLE `todoLink` ADD INDEX(`ownerId`);
 

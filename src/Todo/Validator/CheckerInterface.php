@@ -8,12 +8,11 @@
 
 namespace Todo\Validator;
 
-interface IValidator {
+interface CheckerInterface {
 
-    public function validateLogin($login);
-
-    public function validatePassword($password);
+    public function validateString($login);
 
     public function validateForEmpty($string);
 
+    public function validateLength($string, $minLength, $maxLength);
 }

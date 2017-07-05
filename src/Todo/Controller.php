@@ -16,21 +16,24 @@ use Todo\User\Manager;
 use Todo\User\Entity as User;
 use Todo\Crypt\Coder;
 use Todo\Session\Manager as Session;
-use Todo\Validator\IValidator;
+use Todo\Validator\CheckerInterface;
 
 class Controller
 {
+    /** @var Manager */
     private $manager;
+    /** @var CheckerInterface */
     private $validator;
+    /** @var Session */
     private $session;
 
     /**
      * Controller constructor.
      * @param ContainerInterface $container
-     * @param IValidator $validator
+     * @param CheckerInterface $validator
      * @param Session $session
      */
-    public function __construct(ContainerInterface $container, IValidator $validator, Session $session)
+    public function __construct(ContainerInterface $container, CheckerInterface $validator, Session $session)
     {
         $this->manager = new Manager($container->get('db'));
         $this->validator = $validator;
@@ -49,8 +52,8 @@ class Controller
         $password = trim($request->getParam('password'));
         $error = [];
 
-        $loginValid = $this->validator->validateLogin($login);
-        $passwordValid = $this->validator->validatePassword($password);
+        $loginValid = $this->validator->validateString($login);
+        $passwordValid = $this->validator->validateString($password);
         if (!empty($loginValid) || !empty($passwordValid)) {
             $error = array_merge(
                 ['login' => $loginValid],
@@ -179,7 +182,7 @@ class Controller
     {
         if ($this->session->validateSession($request->getParam('userId'), $request->getParam('token'))) {
             $username = $request->getParam('username');
-            $userNameValid = $this->validator->validateLogin($username);
+            $userNameValid = $this->validator->validateString($username);
             if (empty($userNameValid)) {
                 /** @var Entity $user */
                 $user = $this->manager->getOne(

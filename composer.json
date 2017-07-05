@@ -8,9 +8,17 @@
         "predis/predis": "^1.1",
         "zergular/common": "dev-master"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7"
+    },
     "autoload": {
         "psr-4": {
             "Todo\\": "src/Todo"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
         }
     }
 }

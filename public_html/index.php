@@ -6,7 +6,7 @@ use \Medoo\Medoo;
 use \Todo\Validator\Checker;
 use \Todo\Session\Manager as Session;
 use \Predis\Client as Redis;
-require_once __DIR__ . '../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 header('Access-Control-Allow-Origin: *');
 

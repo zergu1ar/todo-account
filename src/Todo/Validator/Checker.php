@@ -8,7 +8,7 @@
 
 namespace Todo\Validator;
 
-class Checker implements IValidator
+class Checker implements CheckerInterface
 {
     /**
      * @param string $login
@@ -17,32 +17,13 @@ class Checker implements IValidator
      *
      * @return string[]
      */
-    public function validateLogin($login, $minLength = 3, $maxLength = 99)
+    public function validateString($login, $minLength = 3, $maxLength = 99)
     {
         return array_values(
             array_filter(
                 array_merge(
                     $this->validateForEmpty($login),
                     $this->validateLength($login, $minLength, $maxLength)
-                )
-            )
-        );
-    }
-
-    /**
-     * @param string $password
-     * @param int $minLength
-     * @param int $maxLength
-     *
-     * @return string[]
-     */
-    public function validatePassword($password, $minLength = 3, $maxLength = 99)
-    {
-        return array_values(
-            array_filter(
-                array_merge(
-                    $this->validateForEmpty($password),
-                    $this->validateLength($password, $minLength, $maxLength)
                 )
             )
         );
