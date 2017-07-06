@@ -8,25 +8,18 @@ use Zergular\Todo\Controller;
 use Zergular\Todo\User\Manager;
 use Zergular\Todo\Validator\Checker;
 use Zergular\Todo\Session\Manager as Session;
+use Zergular\Common\Config;
 
 require_once __DIR__ . '/../vendor/autoload.php';
+Config::setDir(__DIR__ . '/../config/');
+$db = Config::get('db');
+$redis = Config::get('redis');
 
 header('Access-Control-Allow-Origin: *');
 
 $container = new Container([
-    'db' => new Medoo([
-        'database_type' => 'mysql',
-        'database_name' => 'todo',
-        'server' => '127.0.0.1',
-        'charset' => 'utf8',
-        'username' => 'root',
-        'password' => 'passwd'
-    ]),
-    'redis' => new Redis ([
-        'scheme' => 'tcp',
-        'host' => '127.0.0.1',
-        'port' => 6379,
-    ])
+    'db' => new Medoo($db),
+    'redis' => new Redis ($redis)
 ]);
 
 $controller = new Controller(
